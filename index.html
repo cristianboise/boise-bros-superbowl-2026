@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boise Bros Super Bowl 2026 Can't Lose Prop-A-Palooza</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .matchup {
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: #00d4ff;
+        }
+
+        .game-status {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #ff6b35;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4a6f 100%);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .summary-card h3 {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .summary-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .summary-card.total-invested .value {
+            color: #00d4ff;
+        }
+
+        .summary-card.potential-win .value {
+            color: #ffd700;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: #2a4a6f;
+            border: 2px solid #00d4ff;
+            color: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: #00ff88;
+            color: #1a1a2e;
+            border-color: #00ff88;
+        }
+
+        .bets-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .bet-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4a6f 100%);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #ffa500;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 212, 255, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bet-card:hover::before {
+            opacity: 1;
+        }
+
+        .bet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .bet-card.won {
+            border-left-color: #00ff88;
+            background: linear-gradient(135deg, #1e5f3a 0%, #2a6f4a 100%);
+        }
+
+        .bet-card.lost {
+            border-left-color: #ff4444;
+            background: linear-gradient(135deg, #5f1e1e 0%, #6f2a2a 100%);
+            opacity: 0.7;
+        }
+
+        .bet-card.pending {
+            border-left-color: #ffa500;
+        }
+
+        .bet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .bet-description {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffffff;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+
+        .status-badge.pending {
+            background: #ffa500;
+            color: #1a1a2e;
+        }
+
+        .status-badge.won {
+            background: #00ff88;
+            color: #1a1a2e;
+            animation: celebrate 0.5s;
+        }
+
+        .status-badge.lost {
+            background: #ff4444;
+            color: #ffffff;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .bet-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bet-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bet-detail-label {
+            font-size: 0.85em;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .bet-detail-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .odds {
+            color: #ffd700;
+        }
+
+        .payout {
+            color: #00ff88;
+        }
+
+        .progress-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .progress-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            transition: width 0.5s;
+        }
+
+        .tracker-info {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .tracker-info h3 {
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+
+        .manual-update {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .update-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            border: none;
+            color: #1a1a2e;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .matchup {
+                font-size: 1.2em;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .bet-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏈 Boise Bros Super Bowl 2026 Can't Lose Prop-A-Palooza</h1>
+            <div class="matchup">New England Patriots vs Seattle Seahawks</div>
+            <div class="game-status" id="gameStatus">Game starts at 5:30 PM CST</div>
+        </div>
+
+        <div class="summary-cards">
+            <div class="summary-card total-invested">
+                <h3>Total Invested</h3>
+                <div class="value">$300</div>
+            </div>
+            <div class="summary-card">
+                <h3>Active Bets</h3>
+                <div class="value" id="activeBets">15</div>
+            </div>
+            <div class="summary-card">
+                <h3>Bets Won</h3>
+                <div class="value" id="betsWon">0</div>
+            </div>
+            <div class="summary-card potential-win">
+                <h3>Potential Payout</h3>
+                <div class="value">$4,511.48</div>
+            </div>
+        </div>
+
+        <div class="tracker-info">
+            <h3>📊 How to Use This Tracker</h3>
+            <p>Track all your bets during the game! Click the status buttons on each bet card to manually update as plays happen. The tracker will automatically calculate your winnings and update statistics.</p>
+            <p style="margin-top: 10px;"><strong>Tip:</strong> Keep this page open during the game and update bets in real-time as they hit or miss!</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterBets('all')">All Bets (15)</button>
+            <button class="filter-btn" onclick="filterBets('pending')">Pending (<span id="pendingCount">15</span>)</button>
+            <button class="filter-btn" onclick="filterBets('won')">Won (<span id="wonCount">0</span>)</button>
+            <button class="filter-btn" onclick="filterBets('lost')">Lost (<span id="lostCount">0</span>)</button>
+        </div>
+
+        <div class="bets-grid" id="betsGrid"></div>
+
+        <div class="footer">
+            <p>Good luck! 🍀 May your bets hit and your payout be legendary!</p>
+            <p style="margin-top: 10px;">Remember to gamble responsibly.</p>
+        </div>
+    </div>
+
+    <script>
+        const bets = [
+            {
+                id: 2,
+                description: "Seattle to Attempt a Pass at Opponent's 1 Yard Line",
+                type: "Prop",
+                wager: 20,
+                odds: "+500",
+                payout: 120,
+                status: "pending"
+            },
+            {
+                id: 13,
+                description: "Drake Maye & Sam Darnold to Each Record 30+ Passing Yards in Each Quarter",
+                type: "Prop",
+                wager: 20,
+                odds: "+500",
+                payout: 120,
+                status: "pending"
+            },
+            {
+                id: 6,
+                description: "Seattle Seahawks -4.5 Spread, Kenneth Walker III Under 70.5 Rushing Yds, Over (42.5) Alternate Total Points",
+                type: "Parlay",
+                wager: 20,
+                odds: "+515",
+                payout: 123.16,
+                status: "pending"
+            },
+            {
+                id: 7,
+                description: "Sam Darnold 225+ Yards, Drake Maye 200+ Yards, Ramondre Stevenson 40+ Yards, Jaxon Smith-Njigba anytime TD",
+                type: "Parlay",
+                wager: 20,
+                odds: "+526",
+                payout: 125.32,
+                status: "pending"
+            },
+            {
+                id: 9,
+                description: "Jaxon Smith-Njigba 2+ TD",
+                type: "Prop",
+                wager: 20,
+                odds: "+650",
+                payout: 150,
+                status: "pending"
+            },
+            {
+                id: 11,
+                description: "Jaxon Smith-Njigba and Stefon Diggs to Each have 25+ Receiving Yards in Each Half",
+                type: "Prop",
+                wager: 20,
+                odds: "+650",
+                payout: 150,
+                status: "pending"
+            },
+            {
+                id: 12,
+                description: "Kenneth Walker III and Rhamondre Stevenson to Each have 25+ Rushing Yards in Each Half",
+                type: "Prop",
+                wager: 20,
+                odds: "+700",
+                payout: 160,
+                status: "pending"
+            },
+            {
+                id: 4,
+                description: "Marcus Jones to record an INT",
+                type: "Prop",
+                wager: 20,
+                odds: "+750",
+                payout: 170,
+                status: "pending"
+            },
+            {
+                id: 10,
+                description: "Each Team to Score in All Four Quarters",
+                type: "Prop",
+                wager: 20,
+                odds: "+800",
+                payout: 180,
+                status: "pending"
+            },
+            {
+                id: 3,
+                description: "Drake Maye 3+ INT",
+                type: "Prop",
+                wager: 20,
+                odds: "+920",
+                payout: 204,
+                status: "pending"
+            },
+            {
+                id: 8,
+                description: "Any Defensive Player MVP",
+                type: "Prop",
+                wager: 20,
+                odds: "+1000",
+                payout: 220,
+                status: "pending"
+            },
+            {
+                id: 5,
+                description: "Ernest Jones to record an INT",
+                type: "Prop",
+                wager: 20,
+                odds: "+1100",
+                payout: 240,
+                status: "pending"
+            },
+            {
+                id: 1,
+                description: "Seattle Seahawks Special Teams to Score a TD",
+                type: "Prop",
+                wager: 20,
+                odds: "+1200",
+                payout: 260,
+                status: "pending"
+            },
+            {
+                id: 14,
+                description: "Each Team to Score 1+ TD & 1+ FG in Each Half",
+                type: "Prop",
+                wager: 20,
+                odds: "+1600",
+                payout: 340,
+                status: "pending"
+            },
+            {
+                id: 15,
+                description: "Each Team to Score 1+ Rushing TDs & 1+ Passing TDs in Each Half",
+                type: "Prop",
+                wager: 20,
+                odds: "+10000",
+                payout: 2020,
+                status: "pending"
+            }
+        ];
+
+        function renderBets() {
+            const grid = document.getElementById('betsGrid');
+            grid.innerHTML = '';
+            
+            bets.forEach(bet => {
+                const betCard = document.createElement('div');
+                betCard.className = `bet-card ${bet.status}`;
+                betCard.dataset.status = bet.status;
+                
+                betCard.innerHTML = `
+                    <div class="bet-header">
+                        <div class="bet-description">${bet.description}</div>
+                        <div class="status-badge ${bet.status}">${bet.status.toUpperCase()}</div>
+                    </div>
+                    <div class="bet-details">
+                        <div class="bet-detail">
+                            <div class="bet-detail-label">Type</div>
+                            <div class="bet-detail-value">${bet.type}</div>
+                        </div>
+                        <div class="bet-detail">
+                            <div class="bet-detail-label">Wager</div>
+                            <div class="bet-detail-value">$${bet.wager.toFixed(2)}</div>
+                        </div>
+                        <div class="bet-detail">
+                            <div class="bet-detail-label">Odds</div>
+                            <div class="bet-detail-value odds">${bet.odds}</div>
+                        </div>
+                        <div class="bet-detail">
+                            <div class="bet-detail-label">Potential Payout</div>
+                            <div class="bet-detail-value payout">$${bet.payout.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="manual-update">
+                        <button class="update-btn" onclick="updateBetStatus(${bet.id}, 'won')" ${bet.status !== 'pending' ? 'disabled' : ''}>✓ Won</button>
+                        <button class="update-btn" onclick="updateBetStatus(${bet.id}, 'lost')" ${bet.status !== 'pending' ? 'disabled' : ''}>✗ Lost</button>
+                        <button class="update-btn" onclick="updateBetStatus(${bet.id}, 'pending')" ${bet.status === 'pending' ? 'disabled' : ''}>↻ Reset</button>
+                    </div>
+                `;
+                
+                grid.appendChild(betCard);
+            });
+            
+            updateSummary();
+        }
+
+        function updateBetStatus(betId, newStatus) {
+            const bet = bets.find(b => b.id === betId);
+            if (bet) {
+                bet.status = newStatus;
+                renderBets();
+            }
+        }
+
+        function updateSummary() {
+            const wonBets = bets.filter(b => b.status === 'won').length;
+            const lostBets = bets.filter(b => b.status === 'lost').length;
+            const pendingBets = bets.filter(b => b.status === 'pending').length;
+            
+            const totalWinnings = bets
+                .filter(b => b.status === 'won')
+                .reduce((sum, b) => sum + b.payout, 0);
+            
+            document.getElementById('betsWon').textContent = wonBets;
+            document.getElementById('activeBets').textContent = pendingBets;
+            document.getElementById('pendingCount').textContent = pendingBets;
+            document.getElementById('wonCount').textContent = wonBets;
+            document.getElementById('lostCount').textContent = lostBets;
+            
+            if (wonBets > 0) {
+                const summaryCard = document.querySelector('.summary-card.potential-win');
+                summaryCard.querySelector('h3').textContent = 'Total Winnings';
+                summaryCard.querySelector('.value').textContent = `$${totalWinnings.toFixed(2)}`;
+            }
+        }
+
+        function filterBets(filter) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const cards = document.querySelectorAll('.bet-card');
+            cards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = card.dataset.status === filter ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Initialize
+        renderBets();
+    </script>
+</body>
+</html>
