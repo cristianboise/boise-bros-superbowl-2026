@@ -1,1 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Boise Bros Super Bowl 2026 Can't Lose Prop-A-Palooza</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #ffffff;
+            padding: 10px;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ── Sticky Top Section ── */
+        .sticky-top {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 8px 0 4px;
+            margin: 0 -10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        .sticky-top::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: linear-gradient(to bottom, rgba(22,33,62,0.95), transparent);
+            pointer-events: none;
+        }
+
+        /* ── Header ── */
+        .header {
+            text-align: center;
+            margin-bottom: 14px;
+            padding: 18px 14px;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+
+        .header h1 {
+            font-size: 1.35em;
+            line-height: 1.25;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .matchup {
+            font-size: 0.9em;
+            color: #00d4ff;
+        }
+
+        /* ── Summary Grid ── */
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4a6f 100%);
+            padding: 10px 6px;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+            border: 1.5px solid rgba(0,212,255,0.2);
+            text-align: center;
+        }
+
+        .summary-card .label {
+            font-size: 0.6em;
+            color: #a0a0a0;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-card .value {
+            font-size: 1.15em;
+            font-weight: 700;
+        }
+
+        .summary-card.wagered .value { color: #00d4ff; }
+        .summary-card.potential .value { color: #ffd700; }
+        .summary-card.won-card .value { color: #00ff88; }
+        .summary-card.lost-card .value { color: #ff4444; }
+
+        /* ── Filter Tabs ── */
+        .filter-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .filter-tab {
+            padding: 9px 2px;
+            background: #2a4a6f;
+            border: 2px solid #00d4ff;
+            color: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.78em;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+
+        .filter-tab.active {
+            background: #00ff88;
+            color: #1a1a2e;
+            border-color: #00ff88;
+        }
+
+        /* ── Bet Cards ── */
+        .bet-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .bet-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4a6f 100%);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 5px 14px rgba(0,0,0,0.3);
+            border-left: 5px solid #ffa500;
+            transition: all 0.25s;
+        }
+
+        .bet-card.status-pending { border-left-color: #ffa500; }
+        .bet-card.status-won { border-left-color: #00ff88; background: linear-gradient(135deg, #1a3a2f 0%, #2a5a4f 100%); }
+        .bet-card.status-lost { border-left-color: #ff4444; opacity: 0.55; }
+
+        .bet-description {
+            font-size: 1.05em;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            color: #f0f4fa;
+        }
+
+        .bet-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bet-type-badge {
+            font-size: 0.6em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            background: rgba(0,212,255,0.15);
+            color: #00d4ff;
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+
+        .bet-status-tag {
+            font-size: 0.6em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+
+        .bet-status-tag.pending { background: #ffa500; color: #1a1a2e; }
+        .bet-status-tag.won { background: #00ff88; color: #1a1a2e; animation: celebrate 0.5s; }
+        .bet-status-tag.lost { background: #ff4444; color: #fff; }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .bet-numbers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            padding: 9px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 10px;
+        }
+
+        .bet-num { text-align: center; }
+
+        .bet-num .num-label {
+            font-size: 0.6em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8899aa;
+            margin-bottom: 1px;
+        }
+
+        .bet-num .num-value {
+            font-size: 1em;
+            font-weight: 700;
+        }
+
+        .bet-num .num-value.wager-val { color: #00d4ff; }
+        .bet-num .num-value.odds-val { color: #ffd700; }
+        .bet-num .num-value.payout-val { color: #00ff88; }
+
+        /* ── Action Buttons ── */
+        .bet-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+        }
+
+        .action-btn {
+            padding: 11px 4px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 800;
+            text-align: center;
+            transition: all 0.15s;
+            user-select: none;
+            letter-spacing: 0.3px;
+        }
+
+        .action-btn:active { transform: scale(0.94); }
+
+        .action-btn.won-btn {
+            background: #22a855;
+            color: #fff;
+        }
+
+        .action-btn.lost-btn {
+            background: #cc3344;
+            color: #fff;
+        }
+
+        .action-btn.reset-btn {
+            background: #555e6e;
+            color: #fff;
+        }
+
+        /* ── Empty State ── */
+        .empty-state {
+            text-align: center;
+            padding: 36px 16px;
+            color: #667788;
+            font-size: 0.9em;
+        }
+
+        /* ── Net Result ── */
+        .net-result {
+            text-align: center;
+            margin-top: 14px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a4a6f 100%);
+            border: 1.5px solid rgba(0,212,255,0.2);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .net-result .net-label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #a0a0a0;
+            margin-bottom: 3px;
+        }
+
+        .net-result .net-value {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .net-positive { color: #00ff88; }
+        .net-negative { color: #ff4444; }
+        .net-zero { color: #a0a0a0; }
+
+        /* ── Reset All Button ── */
+        .reset-all-wrap {
+            text-align: center;
+            margin-top: 16px;
+            margin-bottom: 24px;
+        }
+
+        .reset-all-btn {
+            padding: 12px 32px;
+            border-radius: 8px;
+            border: 2px solid #555e6e;
+            background: transparent;
+            color: #8899aa;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 700;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .reset-all-btn:active { transform: scale(0.96); }
+
+        .reset-all-btn:hover {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        /* ── Desktop ── */
+        @media (min-width: 600px) {
+            body { padding: 24px; }
+            .header { padding: 28px 24px; }
+            .header h1 { font-size: 2.1em; }
+            .header .matchup { font-size: 1.1em; }
+            .sticky-top { margin: 0 -24px; padding-left: 24px; padding-right: 24px; }
+            .summary-card { padding: 14px 10px; }
+            .summary-card .value { font-size: 1.5em; }
+            .summary-card .label { font-size: 0.7em; }
+            .bet-card { padding: 20px; }
+            .bet-description { font-size: 1.15em; }
+            .filter-tab { font-size: 0.9em; padding: 10px 8px; }
+            .action-btn { font-size: 0.95em; padding: 12px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏈 Boise Bros Super Bowl 2026 Can't Lose Prop-A-Palooza</h1>
+            <div class="matchup">Seahawks vs Patriots — Feb 8, 2026</div>
+        </div>
+
+        <div class="sticky-top">
+            <div class="summary-row" id="summaryRow"></div>
+
+            <div class="filter-tabs" id="filterTabs">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="pending">Pending</button>
+                <button class="filter-tab" data-filter="won">Won</button>
+                <button class="filter-tab" data-filter="lost">Lost</button>
+            </div>
+        </div>
+
+        <div class="bet-list" id="betList"></div>
+
+        <div class="net-result" id="netResult"></div>
+
+        <div class="reset-all-wrap">
+            <button class="reset-all-btn" id="resetAllBtn">↺ Reset All Bets</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  DATA – sorted by payout low → high
+        // ============================================================
+        var bets = [
+            { id:2,  description:"Seattle to Attempt a Pass at Opponent's 1 Yard Line", type:"Prop", wager:20, odds:"+500", payout:120, status:"pending" },
+            { id:13, description:"Drake Maye & Sam Darnold to Each Record 30+ Passing Yards in Each Quarter", type:"Prop", wager:20, odds:"+500", payout:120, status:"pending" },
+            { id:6,  description:"Seattle Seahawks -4.5 Spread, Kenneth Walker III Under 70.5 Rushing Yds, Over (42.5) Alternate Total Points", type:"Parlay", wager:20, odds:"+515", payout:123.16, status:"pending" },
+            { id:7,  description:"Sam Darnold 225+ Yards, Drake Maye 200+ Yards, Ramondre Stevenson 40+ Yards, Jaxon Smith-Njigba anytime TD", type:"Parlay", wager:20, odds:"+526", payout:125.32, status:"pending" },
+            { id:9,  description:"Jaxon Smith-Njigba 2+ TD", type:"Prop", wager:20, odds:"+650", payout:150, status:"pending" },
+            { id:11, description:"Jaxon Smith-Njigba and Stefon Diggs to Each have 25+ Receiving Yards in Each Half", type:"Prop", wager:20, odds:"+650", payout:150, status:"pending" },
+            { id:12, description:"Kenneth Walker III and Rhamondre Stevenson to Each have 25+ Rushing Yards in Each Half", type:"Prop", wager:20, odds:"+700", payout:160, status:"pending" },
+            { id:4,  description:"Marcus Jones to Record an INT", type:"Prop", wager:20, odds:"+750", payout:170, status:"pending" },
+            { id:10, description:"Each Team to Score in All Four Quarters", type:"Prop", wager:20, odds:"+800", payout:180, status:"pending" },
+            { id:3,  description:"Drake Maye 3+ INT", type:"Prop", wager:20, odds:"+920", payout:204, status:"pending" },
+            { id:8,  description:"Any Defensive Player MVP", type:"Prop", wager:20, odds:"+1000", payout:220, status:"pending" },
+            { id:5,  description:"Ernest Jones to Record an INT", type:"Prop", wager:20, odds:"+1100", payout:240, status:"pending" },
+            { id:1,  description:"Seattle Seahawks Special Teams to Score a TD", type:"Prop", wager:20, odds:"+1200", payout:260, status:"pending" },
+            { id:14, description:"Each Team to Score 1+ TD & 1+ FG in Each Half", type:"Prop", wager:20, odds:"+1600", payout:340, status:"pending" },
+            { id:15, description:"Each Team to Score 1+ Rushing TDs & 1+ Passing TDs in Each Half", type:"Prop", wager:20, odds:"+10000", payout:2020, status:"pending" }
+        ];
+
+        var currentFilter = "all";
+
+        // ============================================================
+        //  RENDERING
+        // ============================================================
+        function renderSummary() {
+            var totalWagered = 0;
+            var totalPotential = 0;
+            var totalWon = 0;
+            var totalLost = 0;
+
+            for (var i = 0; i < bets.length; i++) {
+                totalWagered += bets[i].wager;
+
+                // Potential = payouts still possible (pending + won)
+                // Only lost bets drop out of Potential
+                if (bets[i].status !== "lost") {
+                    totalPotential += bets[i].payout;
+                }
+
+                if (bets[i].status === "won") totalWon += bets[i].payout;
+                if (bets[i].status === "lost") totalLost += bets[i].wager;
+            }
+
+            document.getElementById("summaryRow").innerHTML =
+                '<div class="summary-card wagered"><div class="label">Total Wagered</div><div class="value">$' + totalWagered + '</div></div>' +
+                '<div class="summary-card potential"><div class="label">Potential</div><div class="value">$' + totalPotential.toFixed(2) + '</div></div>' +
+                '<div class="summary-card won-card"><div class="label">Won</div><div class="value">$' + totalWon.toFixed(2) + '</div></div>' +
+                '<div class="summary-card lost-card"><div class="label">Lost</div><div class="value">$' + totalLost + '</div></div>';
+
+            var net = totalWon - totalLost;
+            var netClass = net > 0 ? "net-positive" : net < 0 ? "net-negative" : "net-zero";
+            var netSign = net > 0 ? "+" : "";
+            document.getElementById("netResult").innerHTML =
+                '<div class="net-label">Net Result</div>' +
+                '<div class="net-value ' + netClass + '">' + netSign + '$' + net.toFixed(2) + '</div>';
+        }
+
+        function renderBets() {
+            var html = "";
+            var visibleCount = 0;
+
+            for (var i = 0; i < bets.length; i++) {
+                var bet = bets[i];
+                if (currentFilter !== "all" && bet.status !== currentFilter) continue;
+                visibleCount++;
+
+                html += '<div class="bet-card status-' + bet.status + '">';
+                html += '  <div class="bet-description">' + bet.description + '</div>';
+                html += '  <div class="bet-meta">';
+                html += '    <span class="bet-type-badge">' + bet.type + '</span>';
+                html += '    <span class="bet-status-tag ' + bet.status + '">' + bet.status + '</span>';
+                html += '  </div>';
+                html += '  <div class="bet-numbers">';
+                html += '    <div class="bet-num"><div class="num-label">Wager</div><div class="num-value wager-val">$' + bet.wager + '</div></div>';
+                html += '    <div class="bet-num"><div class="num-label">Odds</div><div class="num-value odds-val">' + bet.odds + '</div></div>';
+                html += '    <div class="bet-num"><div class="num-label">Payout</div><div class="num-value payout-val">$' + bet.payout.toFixed(2) + '</div></div>';
+                html += '  </div>';
+                html += '  <div class="bet-actions">';
+                html += '    <button class="action-btn won-btn" data-action="won" data-id="' + bet.id + '">&#10003; Won</button>';
+                html += '    <button class="action-btn lost-btn" data-action="lost" data-id="' + bet.id + '">&#10007; Lost</button>';
+                html += '    <button class="action-btn reset-btn" data-action="pending" data-id="' + bet.id + '">&#8634; Reset</button>';
+                html += '  </div>';
+                html += '</div>';
+            }
+
+            if (visibleCount === 0) {
+                html = '<div class="empty-state">No ' + currentFilter + ' bets to show.</div>';
+            }
+
+            document.getElementById("betList").innerHTML = html;
+        }
+
+        function renderAll() {
+            renderSummary();
+            renderBets();
+        }
+
+        // ============================================================
+        //  EVENT DELEGATION
+        //  Avoiding .closest() — mobile Safari has issues with it
+        //  when combined with innerHTML re-renders + sticky.
+        // ============================================================
+
+        // Helper: walk up from target to find element with given attribute
+        function findParentWithAttr(el, attr, stopAt) {
+            while (el && el !== stopAt) {
+                if (el.getAttribute && el.getAttribute(attr) !== null) return el;
+                el = el.parentNode;
+            }
+            return null;
+        }
+
+        // Filter tabs
+        document.getElementById("filterTabs").addEventListener("click", function(e) {
+            var tab = findParentWithAttr(e.target, "data-filter", this);
+            if (!tab) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            currentFilter = tab.getAttribute("data-filter") || "all";
+
+            var tabs = document.querySelectorAll(".filter-tab");
+            for (var t = 0; t < tabs.length; t++) tabs[t].classList.remove("active");
+            tab.classList.add("active");
+
+            renderBets();
+        });
+
+        // Bet action buttons (Won / Lost / Reset)
+        document.getElementById("betList").addEventListener("click", function(e) {
+            var btn = findParentWithAttr(e.target, "data-action", this);
+            if (!btn) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var action = btn.getAttribute("data-action");
+            var id = parseInt(btn.getAttribute("data-id"), 10);
+            if (!action || isNaN(id)) return;
+
+            for (var i = 0; i < bets.length; i++) {
+                if (bets[i].id === id) {
+                    bets[i].status = action;
+                    break;
+                }
+            }
+
+            renderAll();
+        });
+
+        // Reset All
+        document.getElementById("resetAllBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            for (var i = 0; i < bets.length; i++) {
+                bets[i].status = "pending";
+            }
+            currentFilter = "all";
+            var tabs = document.querySelectorAll(".filter-tab");
+            for (var t = 0; t < tabs.length; t++) tabs[t].classList.remove("active");
+            tabs[0].classList.add("active");
+            renderAll();
+            window.scrollTo(0, 0);
+        });
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        renderAll();
+        console.log("Boise Bros Prop-A-Palooza loaded – " + bets.length + " bets. Total potential: $4582.48");
+    </script>
+</body>
+</html>
